@@ -26,6 +26,9 @@ const useStyles = makeStyles({
     width: '30rem',
     overflowY: 'scroll',
   },
+  love: {
+    color: '#f7412d',
+  },
 });
 
 const App = () => {
@@ -65,6 +68,13 @@ const App = () => {
           )}
         </section>
       </div>
+      <Divider className={`${classes.divider} u-mv-double`} />
+      <Typography className="u-center">
+        Made with <span className={classes.love}>love</span> by{' '}
+        <a href="https://www.vladzelinschi.com/" title="Vlad Zelinschi">
+          Vlad Zelinschi
+        </a>
+      </Typography>
     </div>
   );
 };
