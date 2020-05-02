@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   },
   textareaWrapper: {
     flex: 1,
+    overflow: 'hidden',
   },
   textarea: {
     flex: 1,
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
   },
   results: {
     width: '30rem',
+    overflowY: 'scroll',
   },
 });
 
@@ -41,7 +43,7 @@ const App = () => {
       <div className={`${classes.textareaWrapper} u-fx`}>
         <textarea
           className={`${classes.textarea} u-full-height`}
-          placeholder="Please enter your text"
+          placeholder="Enter your text"
           value={text}
           onChange={onTextChange}
         />
@@ -52,7 +54,7 @@ const App = () => {
         <section className={classes.results}>
           {!text && (
             <Typography>
-              Please provide some text to get more statistics about it.
+              Provide some text to get more statistics about it.
             </Typography>
           )}
           {text && <Results text={text} />}
