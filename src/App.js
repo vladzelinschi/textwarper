@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useCallback } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import Results from './Results';
+
+const Results = lazy(() => import('./Results'));
 
 const useStyles = makeStyles({
   divider: {
@@ -57,7 +58,11 @@ const App = () => {
               Provide some text to get more statistics about it.
             </Typography>
           )}
-          {text && <Results text={text} />}
+          {text && (
+            <Suspense fallback={null}>
+              <Results text={text} />
+            </Suspense>
+          )}
         </section>
       </div>
     </div>
