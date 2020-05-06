@@ -1,19 +1,30 @@
 import React from 'react';
+import styled from 'styled-components';
 import flatten from 'lodash.flatten';
 import uniq from 'lodash.uniq';
 import humanize from 'humanize-duration';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { SMALL_BP, HIGHLIGHT_TEXT__COLOR } from './Constants';
 
-const useStyles = makeStyles({
-  list: {
-    marginLeft: '1.25rem',
-  },
-});
+const StyledTypography = styled(Typography)`
+  &.MuiTypography-root {
+    margin-bottom: 2rem;
 
-const Results = ({ text }) => {
-  const classes = useStyles();
+    @media screen and (max-width: ${SMALL_BP}) {
+      margin-bottom: 1rem;
+    }
+  }
+`;
 
+const StyledSpan = styled.span`
+  color: ${HIGHLIGHT_TEXT__COLOR};
+`;
+
+const StyledList = styled.ul`
+  margin-left: 1.25rem;
+`;
+
+const Statistics = ({ text }) => {
   const allChars = text.length;
   const allCharsExcludingWhitespace = text.replace(/\s/g, '').length;
   const allWordsArray = flatten(
@@ -64,54 +75,52 @@ const Results = ({ text }) => {
   return (
     <>
       <Typography>
-        Characters with whitespace:{' '}
-        <span className="u-highlight">{allChars}</span>
+        Characters with whitespace: <StyledSpan>{allChars}</StyledSpan>
       </Typography>
       <Typography>
         Characters excluding whitespace:{' '}
-        <span className="u-highlight">{allCharsExcludingWhitespace}</span>
+        <StyledSpan>{allCharsExcludingWhitespace}</StyledSpan>
       </Typography>
       <Typography>
-        All words: <span className="u-highlight">{allWords}</span>
+        All words: <StyledSpan>{allWords}</StyledSpan>
       </Typography>
       <Typography>
-        Unique words: <span className="u-highlight">{uniqueWords}</span>
+        Unique words: <StyledSpan>{uniqueWords}</StyledSpan>
       </Typography>
-      <Typography className="u-mb-double">
-        Average word length:{' '}
-        <span className="u-highlight">{averageWordLength}</span>
-      </Typography>
-      <Typography className="u-mb-double">
+      <StyledTypography>
+        Average word length: <StyledSpan>{averageWordLength}</StyledSpan>
+      </StyledTypography>
+      <StyledTypography>
         At average typing speed of {CPM} CPM (characters per minute), it would
         take{' '}
-        <span className="u-highlight">
+        <StyledSpan>
           {humanize(msToType, {
             round: true,
             conjunction: ' and ',
           })}{' '}
-        </span>
+        </StyledSpan>
         to type this text.
-      </Typography>
-      <Typography className="u-mb-double">
+      </StyledTypography>
+      <StyledTypography>
         At average reading speed of {WPM} WPM (words per minute), it would take{' '}
-        <span className="u-highlight">
+        <StyledSpan>
           {humanize(msToRead, {
             round: true,
             conjunction: ' and ',
           })}{' '}
-        </span>
+        </StyledSpan>
         to read this text.
-      </Typography>
+      </StyledTypography>
       <Typography>Top 15 most used words:</Typography>
-      <ul className={classes.list}>
+      <StyledList>
         {wordOccurrencesArray.map((word, index) => (
           <li key={index}>
-            {word.key}: <span className="u-highlight">{word.value}</span>
+            {word.key}: <StyledSpan>{word.value}</StyledSpan>
           </li>
         ))}
-      </ul>
+      </StyledList>
     </>
   );
 };
 
-export default Results;
+export default Statistics;

@@ -1,81 +1,58 @@
-import React, { Suspense, lazy, useState, useCallback } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect, useCallback } from 'react';
+import styled from 'styled-components';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Header from './Header';
+import Divider from './Divider';
+import Content from './Content';
+import Footer from './Footer';
+import { SMALL_BP, LARGE_BP } from './Constants';
 
-const Results = lazy(() => import('./Results'));
+const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 2rem;
 
-const useStyles = makeStyles({
-  divider: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-  },
-  textareaWrapper: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-  textarea: {
-    flex: 1,
-    background: '#000',
-    color: '#627881',
-    resize: 'none',
-    outline: 'none',
-    fontSize: '1rem',
-    lineHeight: 1.5,
-  },
-  results: {
-    width: '30rem',
-    overflowY: 'scroll',
-  },
-  love: {
-    color: '#f7412d',
-  },
-});
+  @media screen and (max-width: ${SMALL_BP}) {
+    padding: 1rem;
+  }
+`;
 
 const App = () => {
   const [text, setText] = useState('');
-  const classes = useStyles();
+  const [statisticsOnly, setStatisticsOnly] = useState(false);
+  const underBreakpoint = useMediaQuery(`(max-width: ${LARGE_BP})`);
 
   const onTextChange = useCallback((e) => setText(e.target.value), []);
 
+  const onClickSeeStatistics = useCallback(() => setStatisticsOnly(true), []);
+
+  const onClickSeeText = useCallback(() => setStatisticsOnly(false), []);
+
+  useEffect(() => {
+    if (!underBreakpoint && statisticsOnly) {
+      setStatisticsOnly(false);
+    }
+  }, [underBreakpoint, statisticsOnly]);
+
   return (
-    <div className="u-fx u-fx-column u-full-height">
-      <Typography>
-        Count characters and words in your text. Find out what are the most
-        common words. Measure the time to type and the time to read.
-      </Typography>
-      <Divider className={`${classes.divider} u-mv-double`} />
-      <div className={`${classes.textareaWrapper} u-fx`}>
-        <textarea
-          className={`${classes.textarea} u-full-height`}
-          placeholder="Enter your text"
-          value={text}
-          onChange={onTextChange}
-        />
-        <Divider
-          orientation="vertical"
-          className={`${classes.divider} u-mh-double`}
-        />
-        <section className={classes.results}>
-          {!text && (
-            <Typography>
-              Provide some text to get more statistics about it.
-            </Typography>
-          )}
-          {text && (
-            <Suspense fallback={null}>
-              <Results text={text} />
-            </Suspense>
-          )}
-        </section>
-      </div>
-      <Divider className={`${classes.divider} u-mv-double`} />
-      <Typography className="u-center">
-        Made with <span className={classes.love}>love</span> by{' '}
-        <a href="https://www.vladzelinschi.com/" title="Vlad Zelinschi">
-          Vlad Zelinschi
-        </a>
-      </Typography>
-    </div>
+    <StyledWrapper>
+      <Header
+        onClickSeeText={onClickSeeText}
+        onClickSeeStatistics={onClickSeeStatistics}
+        underBreakpoint={underBreakpoint}
+        statisticsOnly={statisticsOnly}
+      />
+      <Divider />
+      <Content
+        text={text}
+        onTextChange={onTextChange}
+        underBreakpoint={underBreakpoint}
+        statisticsOnly={statisticsOnly}
+      />
+      <Divider />
+      <Footer />
+    </StyledWrapper>
   );
 };
 

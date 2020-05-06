@@ -57,57 +57,15 @@
         border-bottom: none;
       }
 
-      #root {
-        height: 100vh;
-      }
-
-      /* UTILS */
-
-      .u-mb-double {
-        margin-bottom: 2rem !important;
-      }
-
-      .u-mh-double {
-        margin-left: 2rem !important;
-        margin-right: 2rem !important;
-      }
-
-      .u-mv-double {
-        margin-top: 2rem !important;
-        margin-bottom: 2rem !important;
-      }
-
-      .u-pa-double {
-        padding: 2rem !important;
-      }
-
-      .u-full-height {
-        height: 100% !important;
-      }
-
-      .u-fx {
-        display: flex !important;
-      }
-
-      .u-fx-column {
-        flex-direction: column !important;
-      }
-
-      .u-center {
-        text-align: center !important;
-      }
-
-      .u-bold {
-        font-weight: bold !important;
-      }
-
-      .u-highlight {
-        color: #627881 !important;
+      @media screen and (max-width: 48rem) {
+        html {
+          font-size: 14px !important;
+        }
       }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root" class="u-pa-double"></div>
+    <div id="root"></div>
   </body>
 </html>
